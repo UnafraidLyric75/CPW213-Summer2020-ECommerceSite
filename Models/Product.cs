@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace eCommerceSite.Models
 {
     /// <summary>
-    /// salable product
+    /// A salable product
     /// </summary>
     public class Product
     {
-        [Key] // make primary key in database
+        [Key] // Make Primary Key in database
         public int ProductId { get; set; }
 
         /// <summary>
@@ -20,16 +20,14 @@ namespace eCommerceSite.Models
         public string Title { get; set; }
 
         /// <summary>
-        /// The retail price as USD
+        /// The retail price as US currency
         /// </summary>
         [DataType(DataType.Currency)]
-        [Display(Name ="Retail Price")]
         public double Price { get; set; }
 
         /// <summary>
-        /// Category product falls under. Ex. Electronics, Funitures, etc.
+        /// Category product falls under. Ex. Electronics, Furniture, etc
         /// </summary>
         public string Category { get; set; }
-
     }
 }
