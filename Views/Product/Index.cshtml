@@ -7,9 +7,12 @@
 
 @if (TempData["Message"] != null)
 {
-    <p>
-         @TempData["Message"]
-    </p>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
 
 <a asp-action="Add" asp-controller="Product">Add Product</a>
