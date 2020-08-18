@@ -47,5 +47,10 @@ namespace eCommerceSite.Controllers
 
             throw new NotImplementedException(); 
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
     }
 }
