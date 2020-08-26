@@ -68,6 +68,8 @@ namespace eCommerceSite.Controllers
                 _context.UserAccounts.Add(acc);
                 await _context.SaveChangesAsync();
 
+                LogUserIn(acc.UserId);
+
                 // redirect to home
                 return RedirectToAction("Index", "Home");
 
@@ -97,12 +99,12 @@ namespace eCommerceSite.Controllers
 
             UserAccount account =
                        await (from u in _context.UserAccounts
-                       where (u.Username == model.UsernameOrEmail
-                          || u.Email == model.UsernameOrEmail)
-                          && u.Password == model.Password
-                       select u).SingleOrDefaultAsync();
+                              where (u.Username == model.UsernameOrEmail
+                                 || u.Email == model.UsernameOrEmail)
+                                 && u.Password == model.Password
+                              select u).SingleOrDefaultAsync();
 
-            if(account == null)
+            if (account == null)
             {
                 // credential did not match
 
@@ -112,10 +114,15 @@ namespace eCommerceSite.Controllers
                 return View(model);
             }
 
-            // Log user into website
-            HttpContext.Session.SetInt32("UserId", account.UserId);
+            LogUserIn(account.UserId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private void LogUserIn(int accountId)
+        {
+            // Log user into website
+            HttpContext.Session.SetInt32("UserId", accountId);
         }
 
         public IActionResult Logout()
