@@ -1,6 +1,34 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.EntityFrameworkCore 
+
+
+@inject IHttpContextAccessor sessionData
+@inject eCommerceSite.Data.ProductContext db
+@{ 
+    int? userId = sessionData.HttpContext.Session.GetInt32("UserId");
+    string username = null;
+    if (userId.HasValue)
+    {
+
+        string userNameFromSession = sessionData.HttpContext.Session.GetString("Username");
+
+        if (userNameFromSession == null)
+        {
+            username = await (from u in db.UserAccounts
+                              where u.UserId == userId
+                              select u.Username).SingleOrDefaultAsync();
+
+            sessionData.HttpContext.Session.SetString("Username", username);
+        }
+        else
+        {
+            username = userNameFromSession;
+        }
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - eCommerceSite</title>
@@ -27,9 +55,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Catalog</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
-                        </li>
+                        @if (userId == null) // if user not logged in
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Log in</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark disabled">Welcome @username!</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
