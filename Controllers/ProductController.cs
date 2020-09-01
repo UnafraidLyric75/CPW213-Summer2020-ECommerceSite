@@ -64,10 +64,7 @@ namespace eCommerceSite.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             // Get product with corresponding id
-            Product p =
-                await (from prod in _context.Products
-                       where prod.ProductId == id
-                       select prod).SingleAsync();
+            Product p = await ProductDB.GetProductAsync(_context, id);
 
             //Product p2 = await _context
             //                .Products
@@ -95,9 +92,7 @@ namespace eCommerceSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            Product p = await (from prod in _context.Products
-                        where prod.ProductId == id
-                        select prod).SingleAsync();
+            Product p = await ProductDB.GetProductAsync(_context, id);
 
             return View(p);
         }
@@ -106,9 +101,7 @@ namespace eCommerceSite.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            Product p = await (from prod in _context.Products
-                        where prod.ProductId == id
-                        select prod).SingleAsync();
+            Product p = await ProductDB.GetProductAsync(_context, id);
 
             _context.Entry(p).State = EntityState.Deleted;
 
